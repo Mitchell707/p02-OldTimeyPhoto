@@ -15,8 +15,11 @@ int greenEffect = 1;
 int blueEffect = 1;
 
 string editMode;
+string again;
 
 bool chooseMode = true;
+
+const int RGB_MAX = 255;
 
 int main()
 {
@@ -35,13 +38,55 @@ int main()
 
     while (chooseMode == true)
     {        
-        cout << "Enter the number of the effect you would you like to add to your image?" << endl << "1. Gray Scale\n" << "2. Film Grain\n";
+        cout << "Enter the number of the effect you would you like to add to your image?" << endl << "1. Gray Scale\n" << "2. Film Grain\n" << "3. Red Scale\n" << "4. Green Scale\n" << "5. Blue Scale\n" << "6. Purple Scale\n" << "7. Yellow Scale\n" << "8. Cyan Scale\n" << "9. Negative\n";
         cin >> editMode;
 
-        if(editMode == "1" || editMode == "2")
+        if(editMode == "1" || editMode == "2" || editMode == "3" || editMode == "4" || editMode == "5" || editMode == "6" || editMode == "7" || editMode == "8" || editMode == "9")
         { 
             chooseMode = false;
         }
+    }
+    if(editMode == "1")
+    {
+        redEffect = 1;
+        greenEffect = 1;
+        blueEffect = 1;
+    }
+    else if(editMode == "3")
+    {
+        redEffect = 1;
+        greenEffect = 0;
+        blueEffect = 0;
+    }
+    else if(editMode == "4")
+    {
+        redEffect = 0;
+        greenEffect = 1;
+        blueEffect = 0;
+    }
+    else if(editMode == "5")
+    {
+        redEffect = 0;
+        greenEffect = 0;
+        blueEffect = 1;
+    }
+    else if(editMode == "6")
+    { 
+        redEffect = 1;
+        greenEffect = 0;
+        blueEffect = 1;
+    }
+    else if(editMode == "7")
+    {
+        redEffect = 1;
+        greenEffect = 1;
+        blueEffect = 0;
+    }
+    else if(editMode == "8")
+    {
+        redEffect = 0;
+        greenEffect = 1;
+        blueEffect = 1;
     }
 
     bmp = image.toPixelMatrix(); //
@@ -53,24 +98,33 @@ int main()
         {
             rgb = bmp[r][c]; //set rgb to the designated pixel in the array
             
-            if(editMode == "1")
+            if(editMode == "1" || editMode == "3" || editMode == "4" || editMode == "5" || editMode == "6" || editMode == "7" || editMode == "8")
             {
-                temp = (rgb.red + rgb.green + rgb.blue) / 3; //takes average of all colors in the pizel
-                rgb.red = temp; //sets all colors to the average
-                rgb.green = temp;
-                rgb.blue = temp;
+            
+                int avg = ((rgb.red * redEffect) + (rgb.green * greenEffect) + (rgb.blue * blueEffect)) / (redEffect + greenEffect + blueEffect);
+
+                rgb.red = avg * redEffect;
+                rgb.green = avg * greenEffect;
+                rgb.blue = avg * blueEffect;
             }
             else if(editMode == "2")
             {
                 if(rand() % 12 == 0) //will make roughly 1 in every 12 pixels black
-                {
-                    temp = 0; 
+                    {
+                        temp = 0;
 
-                    rgb.red = temp;
-                    rgb.green = temp;
-                    rgb.blue = temp;
-                }
+                        rgb.red = temp;
+                        rgb.green = temp;
+                        rgb.blue = temp;
+                    }
             }
+            else if(editMode == "9")
+            {
+                rgb.red = RGB_MAX - rgb.red;
+                rgb.green = RGB_MAX - rgb.green;
+                rgb.blue = RGB_MAX - rgb.blue;
+            }
+            
             bmp[r][c] = rgb; //sets the pixel to the resulting color
         }
     }
@@ -81,6 +135,6 @@ int main()
     cin >> imgName;
 
     image.save(imgName + ".bmp"); //saves the image with the name given by the user.
-
+    
     return 0;
 }
