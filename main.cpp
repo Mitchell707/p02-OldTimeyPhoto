@@ -38,7 +38,7 @@ int main()
 
     while (chooseMode == true)
     {        
-        cout << "Enter the number of the effect you would you like to add to your image?" << endl << "1. Gray Scale\n" << "2. Film Grain\n" << "3. Red Scale\n" << "4. Green Scale\n" << "5. Blue Scale\n" << "6. Purple Scale\n" << "7. Yellow Scale\n" << "8. Cyan Scale\n" << "9. Negative\n";
+        cout << "Enter the number of the effect you would you like to add to your image?" << endl << "1. Gray Scale\n" << "2. Film Grain\n" << "3. Red Scale\n" << "4. Green Scale\n" << "5. Blue Scale\n" << "6. Magenta Scale\n" << "7. Yellow Scale\n" << "8. Cyan Scale\n" << "9. Negative\n";
         cin >> editMode;
 
         if(editMode == "1" || editMode == "2" || editMode == "3" || editMode == "4" || editMode == "5" || editMode == "6" || editMode == "7" || editMode == "8" || editMode == "9")
@@ -46,6 +46,8 @@ int main()
             chooseMode = false;
         }
     }
+
+    //Under code will set the appropriate colors in the rgb to 0 to make a total of 7 color scale combinations.
     if(editMode == "1")
     {
         redEffect = 1;
@@ -91,7 +93,6 @@ int main()
 
     bmp = image.toPixelMatrix(); //
               
-    //Make a multi if statement and have user input to edit the photo how they want, i.e. grayscale, film grain, negative, red, green, blue, purple, yellow, tiel, mirror.
     for(int r = 0; r < bmp.size(); r++)
     {
         for(int c = 0; c < bmp[r].size(); c++)
@@ -100,9 +101,10 @@ int main()
             
             if(editMode == "1" || editMode == "3" || editMode == "4" || editMode == "5" || editMode == "6" || editMode == "7" || editMode == "8")
             {
-            
+                //next line will take the sum of the wanted colors by multiplying the value by the effectors that will be 0 or 1 and divide them by the the sum of the effectors to get the average.
                 int avg = ((rgb.red * redEffect) + (rgb.green * greenEffect) + (rgb.blue * blueEffect)) / (redEffect + greenEffect + blueEffect);
 
+                //Sets each rgb value to avg times the effect to keep each rgb color from being the same number making it gray.
                 rgb.red = avg * redEffect;
                 rgb.green = avg * greenEffect;
                 rgb.blue = avg * blueEffect;
@@ -120,6 +122,7 @@ int main()
             }
             else if(editMode == "9")
             {
+                //each section sets the rgb color to 255 - the rgb color making the present pixel color its opposite i.e black to white, orange to blue, green to magenta...
                 rgb.red = RGB_MAX - rgb.red;
                 rgb.green = RGB_MAX - rgb.green;
                 rgb.blue = RGB_MAX - rgb.blue;
@@ -134,7 +137,7 @@ int main()
     cout << "What name would you like to save this image with.\n";
     cin >> imgName;
 
-    image.save(imgName + ".bmp"); //saves the image with the name given by the user.
+    image.save(imgName + ".bmp"); //saves the image with the name given by the user and the suffix .bmp
     
     return 0;
 }
